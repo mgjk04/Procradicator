@@ -19,9 +19,12 @@ async def test_gen_task_tool_handles_db_disconn() -> None:
     session_id: UUID = uuid4()
 
     # sim unexpected error
-    mock_task_svc.create_roadmap.side_effect = ServiceError(
-        f"Could not generate roadmap: {str(DatabaseError('database connection was lost'))}"
+    db_err: DatabaseError = DatabaseError("database connection was lost")
+    svc_err: ServiceError = ServiceError(
+        f"Could not generate roadmap: {str(db_err)}"
     )
+    svc_err.__cause__ = db_err
+    mock_task_svc.create_roadmap.side_effect = svc_err
 
     mock_chat_svc.get_history.return_value = []
     mock_chat_svc.add_message.return_value = ChatMessage(

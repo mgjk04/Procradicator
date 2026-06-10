@@ -97,13 +97,17 @@ class LLMService:
                     f"Value Error: {str(e)}. Check your structure and ensure your fields for tasks and subtasks are correct."  # noqa: E501
                 ) from e
             except ServiceError as e:
-                if isinstance(e.__cause__, ResourceNotFoundError):
-                    raise ModelRetry(
-                        f"Not Found: {str(e)}. Ensure all dependencies exist in your list."
-                    ) from e
-                if isinstance(e.__cause__, DatabaseError):
-                    # if fatal DB error, stop retrying
-                    return f"Encountered a database issue: {str(e)}"
+                match e.__cause__:
+                    case ResourceNotFoundError():
+                        raise ModelRetry(
+                            f"Not Found: {str(e)}. Ensure all dependencies exist in your list."
+                        ) from e
+                    case DatabaseError():
+                        # if fatal DB error, stop retrying
+                        return f"Encountered a database issue: {str(e)}"
+                    case _:
+                        return f"An unexpected error occured: {str(e)}"
+
 
     async def handle_chat(
         self,
