@@ -42,22 +42,14 @@ Data synchronization leverages idempotent keys, HTTP `If-Match` headers, and `ET
 ### Core API Endpoints
 
 * **Authentication:** `GET /auth/me`
-
-
+* **Tasks:**
   * `POST /tasks` (Create)
-
   * `PUT /tasks/{task_id}` (Complete Replacement)
-
   * `DELETE /tasks/{task_id}` (Deletion)
-
-  * `PUT /tasks/{task_id}` (Complete Replacement)
-
+* **Focus:**
   * `POST /focus` (Creation)
   * `PATCH /focus/{session_id}` (Append Progress)
   * `PUT /focus/{session_id}` (Conflict Resolution Replacement)
-* `PATCH /focus/{session_id}` (Append Progress)
-
-
 * `PUT /focus/{session_id}` (Conflict Resolution Replacement)
 
 
