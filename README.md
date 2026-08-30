@@ -5,26 +5,12 @@ A mobile-first Progressive Web Application (PWA) that helps reduce procrastinati
 ## Features
 
 * Secure credential-based registration and login, with Google Single Sign-On (SSO) support, using JSON Web Tokens (JWT) and HTTP-only cookies.
-
-
 * Task dashboard with infinite scroll and manual task modifications via a nested React Hook Form with drag-and-drop subtask reordering.
-
-
 * AI-Assisted Task Management that leverages a Large Language Model (Groq) to translate natural language goals into structured, manageable task roadmaps.
-
-
 * Anti-procrastination Focus Sessions that track work and rest cycles, explicitly requiring users to document a reason before abandoning an active session.
-
-
 * Productivity Analytics and a Recommendation Engine that utilizes Thompson sampling to analyze past session outcomes and recommend optimal work-rest intervals.
-
-
 * Local-first offline storage via a PWA service worker and IndexedDB, enabling offline CRUD operations and Focus Sessions with automatic background synchronization and conflict resolution.
-
-
 * Social accountability features allowing users to add friends and view a daily leaderboard comparing total focus minutes and completed subtasks.
-
-
 
 ## Tech Stack
 
