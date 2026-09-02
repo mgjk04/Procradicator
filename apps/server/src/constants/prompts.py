@@ -30,7 +30,10 @@ LOGIC CONSTRAINTS FOR THE ROADMAP:
 - Tasks must be "atomic", small enough that a user doesn't procrastinate starting them.
 - Ensure the 'due_at' datetime provides a sustainable, reasonable pace for completion.
 """
-DATETIME_PROMPT: str = "The current date and time is {now}."
+DATETIME_PROMPT: str = (
+    "The user's current date and time in {tz} is {now}. "
+    "Use {tz} for dates and times that do not include a timezone."
+)
 
 UPDATE_CONTEXT: str = """
 The user is editing an existing task.

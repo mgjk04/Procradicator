@@ -119,7 +119,7 @@ async def send_message(
 ) -> ChatMessage:
     try:
         return await llm_svc.handle_chat(
-            session_id, current_user.id, payload.msg, task_svc, chat_svc
+            session_id, current_user.id, payload.msg, task_svc, chat_svc, payload.tz
         )
     except ForbiddenError as e:
         raise HTTPException(

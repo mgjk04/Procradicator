@@ -4,6 +4,7 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from uuid import UUID
+from zoneinfo import ZoneInfo
 
 from pydantic_ai import Agent, AgentRunResult, ModelMessage, NativeOutput
 from pydantic_ai.models.groq import GroqModel
@@ -71,6 +72,7 @@ class LLMService:
         user_input: str,
         task_svc: TaskServiceProtocol,
         chat_svc: ChatServiceProtocol,
+        tz: str,
     ) -> ChatMessage:
         reply: str = ERR_CRITICAL
         role: Role = Role.ASSISTANT
@@ -105,13 +107,19 @@ class LLMService:
                     current_task=json.dumps(current_task_payload)
                 )
 
-            now: str = str(datetime.now(UTC))
+            user_tz = ZoneInfo(tz)
+            now = datetime.now(user_tz).isoformat()
             result: AgentRunResult[ChatResponse | CreateTask | UpdateTask] = await self.agent.run(
                 deps=deps,
                 message_history=pydantic_history,
-                instructions=DATETIME_PROMPT.format(now=now) + update_context,
+                instructions=DATETIME_PROMPT.format(now=now, tz=tz) + update_context,
             )
             response: ChatResponse | CreateTask | UpdateTask = result.output
+            if isinstance(response, (CreateTask, UpdateTask)):
+                due_at = response.due_at
+                if due_at.tzinfo is None:
+                    due_at = due_at.replace(tzinfo=user_tz)
+                response.due_at = due_at.astimezone(UTC)
 
             match response:
                 case ChatResponse():
