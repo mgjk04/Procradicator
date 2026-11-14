@@ -10,11 +10,12 @@ type SendMessageArgs = {
 const sendChatMessage =
   (sessionId: string) =>
   async ({ message }: SendMessageArgs): Promise<ChatMessage> => {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const res = await fetch(API_ROUTES.CHAT.MESSAGE(sessionId), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
-      body: JSON.stringify({ msg: message }),
+      body: JSON.stringify({ msg: message, tz }),
     });
     if (!res.ok) throw new Error(String(res.status));
     return res.json();

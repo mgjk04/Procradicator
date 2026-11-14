@@ -9,3 +9,4 @@ class CreateSession(BaseModel):
 
 class CreateMessage(BaseModel):
     msg: str
+    tz: str

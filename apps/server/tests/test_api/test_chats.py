@@ -83,6 +83,7 @@ class ForbiddenLLMService:
         user_input: str,
         task_svc: object,
         chat_svc: object,
+        tz: str,
     ) -> ChatMessage:
         raise ForbiddenError("chat session belongs to another user")
 
@@ -108,7 +109,7 @@ def test_create_chat_session_passes_current_user_id_to_service() -> None:
     [
         ("get", f"/chats/sessions/{uuid4()}", None),
         ("get", f"/chats/sessions/{uuid4()}/history?limit=20&page=1", None),
-        ("post", f"/chats/sessions/{uuid4()}/messages", {"msg": "hello"}),
+        ("post", f"/chats/sessions/{uuid4()}/messages", {"msg": "hello", "tz": "UTC"}),
     ],
 )
 def test_other_users_chat_resource_returns_403(

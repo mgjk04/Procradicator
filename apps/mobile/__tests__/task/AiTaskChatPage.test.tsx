@@ -161,6 +161,7 @@ test('labels task confirmation as an AI message', async () => {
 });
 
 test('sends a message to the chat session', async () => {
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
   renderWithProviders(<AiTaskChatPage />);
   await waitFor(() =>
     expect(mockFetch).toHaveBeenCalledWith(mockHistoryUrl, {
@@ -183,6 +184,7 @@ test('sends a message to the chat session', async () => {
       credentials: 'include',
       body: JSON.stringify({
         msg: 'Reduce this roadmap to three subtasks',
+        tz,
       }),
     }),
   );
